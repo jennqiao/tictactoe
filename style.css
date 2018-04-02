@@ -1,0 +1,41 @@
+td {
+	font-size: 100px;
+	cursor: pointer;
+	padding: 20px;
+
+}
+
+/*table, td {
+	border: 1px solid black;
+
+}*/
+
+table {
+	table-layout: fixed;
+    width: 300px; 
+}
+
+#congrats {
+	color: red;
+	text-align: center;
+	font-size: 50px;
+}
+
+/*h1 {
+	text-align: center;
+	width: 300px;
+}
+
+button {
+	text-align: center;
+
+}*/
+
+.header {
+	width: 300px;
+	text-align: center;
+}
+
+body {
+	text-align: center;
+}
