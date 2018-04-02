@@ -71,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
     //change model board
     var position = e.target.getAttribute('data-position').split(',');
     game[position[0]][position[1]] = isFirstPlayer ? 1 : -1;
-    console.log(game);
 
     // renderBoard();
     var mark = isFirstPlayer ? 'X' : 'O';
@@ -129,13 +128,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   //view
 
-  var squares = document.getElementsByClassName('square');
 
-  for (var i=0; i<squares.length; i++) {
-        console.log(squares[i].getAttribute('data-position'));
-        var square = squares[i];
-        square.addEventListener('click', handleSquareClick);
-  }
+  var board = document.getElementById('board');
+  board.addEventListener('click', handleSquareClick);
 
 
   
