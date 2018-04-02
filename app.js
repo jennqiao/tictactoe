@@ -5,8 +5,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
   //model
 
   var game = [[0,0,0], [0,0,0], [0,0,0]];
-  var isFirstPlayer = true;
+  var firstPlayerGoesFirst = true;
   var winner = null;
+
+  var firstPlayerWinCount = 0;
+  var secondPlayerWinCount = 0;
 
   var checkForWinners = function() {
 
@@ -21,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       }
       if (rowSum === 3 || rowSum === -3) {
         hasWinner = true;
-        winner = 3 ? 'First Player' : 'Second Player';
+        winner = (rowSum===3) ? 'First Player' : 'Second Player';
       }
     }
 
@@ -36,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
       if (colSum === 3 || colSum === -3) {
         hasWinner = true;
-        winner = 3 ? 'First Player' : 'Second Player';
+        winner = (colSum===3) ? 'First Player' : 'Second Player';
 
       }
 
@@ -48,11 +51,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
     var rightDiag = game[0][0] + game[1][1] + game[2][2];
     if (leftDiag === 3 || leftDiag === -3) {
       hasWinner = true;
-      winner = 3 ? 'First Player' : 'Second Player';
+        winner = (leftDiag===3) ? 'First Player' : 'Second Player';
 
     } else if (rightDiag === 3 || rightDiag === -3) {
       hasWinner = true;
-      winner = 3 ? 'First Player' : 'Second Player';
+      winner = (rightDiag===3) ? 'First Player' : 'Second Player';
 
     }
     
@@ -70,14 +73,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
     //change model board
     var position = e.target.getAttribute('data-position').split(',');
-    game[position[0]][position[1]] = isFirstPlayer ? 1 : -1;
+    game[position[0]][position[1]] = firstPlayerGoesFirst ? 1 : -1;
 
     // renderBoard();
-    var mark = isFirstPlayer ? 'X' : 'O';
+    var mark = firstPlayerGoesFirst ? 'X' : 'O';
     e.target.innerHTML = mark;
 
-    //change isFirstPlayer
-    isFirstPlayer = !isFirstPlayer;
+    //change firstPlayerGoesFirst
+    firstPlayerGoesFirst = !firstPlayerGoesFirst;
     
     //check if any winners
     checkForWinners();
@@ -96,7 +99,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
     }
 
     //reset values
-    isFirstPlayer = true;
     winner = null;
 
     //get rid of congrats
@@ -114,12 +116,37 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   var renderWinner = function() {
 
+    //render congrats message
     var message = document.createElement('div');
     message.innerHTML = 'Congrats '+winner+"!";
     message.setAttribute("id", "congrats");
 
     var board = document.getElementById('body');
     board.append(message);
+
+
+    //add to win count
+    if (winner==="First Player") {
+      firstPlayerWinCount += 1;
+      firstPlayerGoesFirst = true;
+    } else {
+      secondPlayerWinCount +=1;
+      firstPlayerGoesFirst = false;
+
+    }
+
+    //update scorecard
+
+    var firstPlayerScore = document.getElementById('firstPlayerScore');
+    firstPlayerScore.innerText = firstPlayerWinCount;
+
+    var secondPlayerScore = document.getElementById('secondPlayerScore');
+    secondPlayerScore.innerText = secondPlayerWinCount;
+    
+
+    console.log('first player count', firstPlayerWinCount);
+    console.log('second player count', secondPlayerWinCount);
+
 
   }
   
