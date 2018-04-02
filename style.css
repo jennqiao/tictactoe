@@ -17,7 +17,6 @@ table {
 
 #congrats {
 	color: red;
-	text-align: center;
 	font-size: 50px;
 }
 
@@ -35,7 +34,7 @@ button {
 	width: 300px;
 	text-align: center;
 }
-
+/*
 body {
 	text-align: center;
-}
+}*/

@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   //model
 
-
   var game = [[0,0,0], [0,0,0], [0,0,0]];
   var isFirstPlayer = true;
   var winner = null;
@@ -57,11 +56,32 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
     }
     
-    console.log('haswinner?', hasWinner);
-
     if (hasWinner) {
       renderWinner();
     }
+
+  }
+
+
+
+  //controller
+
+  var handleSquareClick = function(e) {
+
+    //change model board
+    var position = e.target.getAttribute('data-position').split(',');
+    game[position[0]][position[1]] = isFirstPlayer ? 1 : -1;
+    console.log(game);
+
+    // renderBoard();
+    var mark = isFirstPlayer ? 'X' : 'O';
+    e.target.innerHTML = mark;
+
+    //change isFirstPlayer
+    isFirstPlayer = !isFirstPlayer;
+    
+    //check if any winners
+    checkForWinners();
 
   }
 
@@ -90,58 +110,8 @@ document.addEventListener('DOMContentLoaded', function(event) {
       var square = squares[i];
       square.innerHTML = '_';
     }
-  
-
-    console.log(game);
-
-
 
   }
-
-
-
-  //controller
-
-  var handleSquareClick = function(e) {
-
-    //change model board
-    var position = e.target.getAttribute('data-position').split(',');
-    game[position[0]][position[1]] = isFirstPlayer ? 1 : -1;
-    console.log(game);
-
-    // renderBoard();
-    var mark = isFirstPlayer ? 'X' : 'O';
-    e.target.innerHTML = mark;
-
-    //change isFirstPlayer
-    isFirstPlayer = !isFirstPlayer;
-    
-    //check if any winners
-    checkForWinners();
-
-  }
-
-
-  var squares = document.getElementsByClassName('square');
-
-  for (var i=0; i<squares.length; i++) {
-      console.log(squares[i].getAttribute('data-position'));
-      var square = squares[i];
-      square.addEventListener('click', handleSquareClick);
-  }
-
-
-  
-
-  var button = document.getElementsByTagName('button');
-  button[0].addEventListener('click', handleButtonClick);
-
-
-
-
-
-
-  //view
 
   var renderWinner = function() {
 
@@ -153,9 +123,27 @@ document.addEventListener('DOMContentLoaded', function(event) {
     board.append(message);
 
   }
+  
+
+
+
+  //view
+
+  var squares = document.getElementsByClassName('square');
+
+  for (var i=0; i<squares.length; i++) {
+        console.log(squares[i].getAttribute('data-position'));
+        var square = squares[i];
+        square.addEventListener('click', handleSquareClick);
+  }
 
 
   
+  var button = document.getElementsByTagName('button');
+  button[0].addEventListener('click', handleButtonClick);
 
+
+
+  
 
 });
