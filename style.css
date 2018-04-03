@@ -10,6 +10,10 @@
 
 }*/
 
+/*#board {
+	opacity: 0.25;
+}*/
+
 table {
 	table-layout: fixed;
     width: 300px; 
@@ -17,7 +21,7 @@ table {
 
 #congrats {
 	color: red;
-	font-size: 50px;
+	font-size: 40px;
 }
 
 /*h1 {
@@ -46,4 +50,5 @@ body {
 body {
 	text-align: center;
 	width: 300px;
+	grid-template-columns: 50% 50%;
 }

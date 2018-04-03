@@ -11,6 +11,10 @@ document.addEventListener('DOMContentLoaded', function(event) {
   var firstPlayerWinCount = 0;
   var secondPlayerWinCount = 0;
 
+  var firstName = null;
+  var secondName = null;
+
+
   var checkForWinners = function() {
 
     var hasWinner = false;
@@ -24,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
       }
       if (rowSum === 3 || rowSum === -3) {
         hasWinner = true;
-        winner = (rowSum===3) ? 'First Player' : 'Second Player';
+        winner = (rowSum===3) ? firstName : secondName;
       }
     }
 
@@ -39,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
       if (colSum === 3 || colSum === -3) {
         hasWinner = true;
-        winner = (colSum===3) ? 'First Player' : 'Second Player';
+        winner = (colSum===3) ? firstName : secondName;
 
       }
 
@@ -51,11 +55,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
     var rightDiag = game[0][0] + game[1][1] + game[2][2];
     if (leftDiag === 3 || leftDiag === -3) {
       hasWinner = true;
-        winner = (leftDiag===3) ? 'First Player' : 'Second Player';
+        winner = (leftDiag===3) ? firstName : secondName;
 
     } else if (rightDiag === 3 || rightDiag === -3) {
       hasWinner = true;
-      winner = (rightDiag===3) ? 'First Player' : 'Second Player';
+      winner = (rightDiag===3) ? firstName : secondName;
 
     }
     
@@ -71,19 +75,24 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   var handleSquareClick = function(e) {
 
-    //change model board
+    //check if square is already filled
     var position = e.target.getAttribute('data-position').split(',');
-    game[position[0]][position[1]] = firstPlayerGoesFirst ? 1 : -1;
+    if (game[position[0]][position[1]] === 0 && !winner) {
+      //change model board
+      game[position[0]][position[1]] = firstPlayerGoesFirst ? 1 : -1;
 
-    // renderBoard();
-    var mark = firstPlayerGoesFirst ? 'X' : 'O';
-    e.target.innerHTML = mark;
+      // renderBoard();
+      var mark = firstPlayerGoesFirst ? 'X' : 'O';
+      e.target.innerHTML = mark;
 
-    //change firstPlayerGoesFirst
-    firstPlayerGoesFirst = !firstPlayerGoesFirst;
+      //change firstPlayerGoesFirst
+      firstPlayerGoesFirst = !firstPlayerGoesFirst;
+
+      //check if any winners
+      checkForWinners();
+    } 
+
     
-    //check if any winners
-    checkForWinners();
 
   }
 
@@ -103,7 +112,9 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
     //get rid of congrats
     var congratsMessage = document.getElementById('congrats');
-    congratsMessage.outerHTML = '';
+    if (congratsMessage) {
+      congratsMessage.outerHTML = '';
+    }
 
     //clear dom
     var squares = document.getElementsByClassName('square');
@@ -121,16 +132,16 @@ document.addEventListener('DOMContentLoaded', function(event) {
     message.innerHTML = 'Congrats '+winner+"!";
     message.setAttribute("id", "congrats");
 
-    var board = document.getElementById('body');
+    var board = document.getElementById('board');
     board.append(message);
 
 
     //add to win count
-    if (winner==="First Player") {
+    if (winner=== firstName) {
       firstPlayerWinCount += 1;
       firstPlayerGoesFirst = true;
     } else {
-      secondPlayerWinCount +=1;
+      secondPlayerWinCount += 1;
       firstPlayerGoesFirst = false;
 
     }
@@ -155,14 +166,26 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   //view
 
-
+  //event listeners
   var board = document.getElementById('board');
   board.addEventListener('click', handleSquareClick);
 
-
-  
   var button = document.getElementsByTagName('button');
   button[0].addEventListener('click', handleButtonClick);
+
+  //player's names
+  firstName = prompt("Please enter first player's name", 'Harry Potter');
+  secondName = prompt("Please enter second player's name", 'Hermione');
+
+  //update players' names on app
+  var firstEle = document.getElementsByClassName('firstPlayerName');
+  for (var i=0; i<firstEle.length; i++) {
+     firstEle[i].innerText = firstName;
+  }
+  var secondEle = document.getElementsByClassName('secondPlayerName');
+  for (var i=0; i<firstEle.length; i++) {
+     secondEle[i].innerText = secondName;
+  }
 
 
 
